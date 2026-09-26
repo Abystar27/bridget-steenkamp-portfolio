@@ -30,8 +30,6 @@ const statusText = document.getElementById("statusText");
 
 if (bookingForm && statusText) {
   bookingForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
     const name = document.getElementById("bookingName").value.trim();
     const email = document.getElementById("bookingEmail").value.trim();
     const type = document.getElementById("bookingType").value;
@@ -39,21 +37,15 @@ if (bookingForm && statusText) {
     statusText.classList.remove("error");
 
     if (!name || !email || !type) {
+      event.preventDefault();
       statusText.textContent = "Please fill in the required fields.";
       statusText.classList.add("error");
       return;
     }
 
-    statusText.textContent =
-      "Enquiry prepared. Connect this form to an email service or backend to actually send it.";
-
-    // Example payload once a backend/email service is connected:
-    // const message = document.getElementById("bookingMessage").value.trim();
-    // fetch("/send-enquiry", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ name, email, type, message }),
-    // });
+    // Valid — let the form submit normally to Formspree (see the
+    // action="" attribute on the <form> tag in index.html).
+    statusText.textContent = "Sending your enquiry...";
   });
 }
 
@@ -64,3 +56,52 @@ if (clearFormBtn && bookingForm && statusText) {
     statusText.classList.remove("error");
   });
 }
+
+// Lightbox for gallery images
+const lightboxOverlay = document.getElementById("lightboxOverlay");
+const lightboxImage = document.getElementById("lightboxImage");
+const lightboxCaption = document.getElementById("lightboxCaption");
+const lightboxClose = document.getElementById("lightboxClose");
+let lightboxLastTrigger = null;
+
+function openLightbox(trigger) {
+  const fullSrc = trigger.getAttribute("data-full");
+  const caption = trigger.getAttribute("data-caption") || "";
+  if (!fullSrc || !lightboxOverlay) return;
+
+  lightboxLastTrigger = trigger;
+  lightboxImage.src = fullSrc;
+  lightboxImage.alt = caption;
+  lightboxCaption.textContent = caption;
+  lightboxOverlay.hidden = false;
+  lightboxClose.focus();
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  if (!lightboxOverlay) return;
+  lightboxOverlay.hidden = true;
+  lightboxImage.src = "";
+  document.body.style.overflow = "";
+  if (lightboxLastTrigger) lightboxLastTrigger.focus();
+}
+
+document.querySelectorAll(".lightbox-trigger").forEach((trigger) => {
+  trigger.addEventListener("click", () => openLightbox(trigger));
+});
+
+if (lightboxClose) {
+  lightboxClose.addEventListener("click", closeLightbox);
+}
+
+if (lightboxOverlay) {
+  lightboxOverlay.addEventListener("click", (event) => {
+    if (event.target === lightboxOverlay) closeLightbox();
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && lightboxOverlay && !lightboxOverlay.hidden) {
+    closeLightbox();
+  }
+});
