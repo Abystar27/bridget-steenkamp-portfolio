@@ -115,6 +115,7 @@ const searchIndex = [
   { title: "Slow Workshops", href: "#workshops", snippet: "A distinct, hands-on practice — a slower, participatory way of working." },
   { title: "Slow-Eco Textile Workshop", href: "#workshops", snippet: "Co-led with textile artist Yíímiiká, exploring Àdìrẹ Ẹlẹ̀kọ resist-dyeing with cassava-starch paste." },
   { title: "UR Neurobeautiful", href: "#media", snippet: "Solo exhibition at Whitelands College Chapel — exploring variety, embracing neurobeauty." },
+  { title: "Thread Carefully Textile Art Exhibition", href: "#media", snippet: "9–12 June 2026, The Well, Southlands Chapel — with YÍÍMIIKÁ." },
   { title: "Tales in Reception", href: "#research", snippet: "A collection of short essays on neurodivergence, dyslexia, ADHD and sensory processing." },
   { title: "Food for Fashion: From Cassava Paste to Circular Fashion", href: "#research", snippet: "University of Roehampton Primary Schools Partnership Newsletter, co-authored article." },
   { title: "The Nettles Project Roehampton", href: "#media", snippet: "YouTube talk / workshop recording." },

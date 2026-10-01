@@ -676,6 +676,11 @@ ul { list-style: none; margin: 0; padding: 0; }
   color: var(--color-ink-soft);
   text-align: center;
 }
+.gallery-figure figcaption a {
+  color: var(--color-leaf);
+  text-decoration: underline;
+}
+.gallery-figure figcaption a:hover { color: var(--color-leaf-dark); }
 
 .lightbox-overlay {
   position: fixed;
