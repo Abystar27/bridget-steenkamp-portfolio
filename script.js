@@ -105,3 +105,101 @@ document.addEventListener("keydown", (event) => {
     closeLightbox();
   }
 });
+
+// Site search
+// A small hand-picked index of the real content on the page. Add a line
+// here whenever a new section, publication, video, or milestone goes in.
+const searchIndex = [
+  { title: "Profile", href: "#about", snippet: "Bridget Moira Steenkamp — neurodivergent artist, art tutor, children's chaplain, researcher and sole trader." },
+  { title: "EcoHistories", href: "#ecohistories", snippet: "Storytelling rooted in museums, bringing objects, place and ecology together." },
+  { title: "Slow Workshops", href: "#workshops", snippet: "A distinct, hands-on practice — a slower, participatory way of working." },
+  { title: "Slow-Eco Textile Workshop", href: "#workshops", snippet: "Co-led with textile artist Yíímiiká, exploring Àdìrẹ Ẹlẹ̀kọ resist-dyeing with cassava-starch paste." },
+  { title: "UR Neurobeautiful", href: "#media", snippet: "Solo exhibition at Whitelands College Chapel — exploring variety, embracing neurobeauty." },
+  { title: "Tales in Reception", href: "#research", snippet: "A collection of short essays on neurodivergence, dyslexia, ADHD and sensory processing." },
+  { title: "Food for Fashion: From Cassava Paste to Circular Fashion", href: "#research", snippet: "University of Roehampton Primary Schools Partnership Newsletter, co-authored article." },
+  { title: "The Nettles Project Roehampton", href: "#media", snippet: "YouTube talk / workshop recording." },
+  { title: "Gallery", href: "#gallery", snippet: "Portraits, workshop and conference moments." },
+  { title: "Booking", href: "#contact", snippet: "Get in touch for EcoHistories sessions and Slow Workshops bookings." },
+];
+
+const siteSearchInput = document.getElementById("siteSearchInput");
+const siteSearchResults = document.getElementById("siteSearchResults");
+
+function renderSearchResults(query) {
+  if (!siteSearchResults) return;
+
+  const trimmed = query.trim().toLowerCase();
+  if (!trimmed) {
+    siteSearchResults.hidden = true;
+    siteSearchResults.innerHTML = "";
+    return;
+  }
+
+  const matches = searchIndex.filter((item) => {
+    const haystack = (item.title + " " + item.snippet).toLowerCase();
+    return haystack.includes(trimmed);
+  });
+
+  siteSearchResults.innerHTML = "";
+
+  if (matches.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "site-search-empty";
+    empty.textContent = "No matches found.";
+    siteSearchResults.appendChild(empty);
+    siteSearchResults.hidden = false;
+    return;
+  }
+
+  matches.slice(0, 8).forEach((item) => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = item.href;
+
+    const titleEl = document.createElement("span");
+    titleEl.className = "site-search-result-title";
+    titleEl.textContent = item.title;
+
+    const snippetEl = document.createElement("span");
+    snippetEl.className = "site-search-result-snippet";
+    snippetEl.textContent = item.snippet;
+
+    a.appendChild(titleEl);
+    a.appendChild(snippetEl);
+    li.appendChild(a);
+    siteSearchResults.appendChild(li);
+
+    a.addEventListener("click", () => {
+      siteSearchResults.hidden = true;
+      siteSearchInput.value = "";
+    });
+  });
+
+  siteSearchResults.hidden = false;
+}
+
+if (siteSearchInput && siteSearchResults) {
+  siteSearchInput.addEventListener("input", (event) => {
+    renderSearchResults(event.target.value);
+  });
+
+  siteSearchInput.addEventListener("focus", (event) => {
+    if (event.target.value.trim()) renderSearchResults(event.target.value);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      !siteSearchInput.contains(event.target) &&
+      !siteSearchResults.contains(event.target)
+    ) {
+      siteSearchResults.hidden = true;
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !siteSearchResults.hidden) {
+      siteSearchResults.hidden = true;
+      siteSearchInput.blur();
+    }
+  });
+}
